@@ -1,4 +1,4 @@
-((msg, mat = 5, y = 60) => {
+((msg, mat = 2, y = 50) => {
 	const letters = {
 		"a": " * \n* *\n***\n* *\n* *",
 		"b": "** \n* *\n** \n* *\n** ",
@@ -22,20 +22,27 @@
 		"t": "***\n * \n * \n * \n * ",
 		"u": "* *\n* *\n* *\n* *\n***",
 		"v": "* *\n* *\n* *\n* *\n * ",
-		"w": "   \n   \n   \n   \n   ",
+		"w": "*   *\n*   *\n* * *\n* * *\n * * ",
 		"x": "* *\n* *\n * \n* *\n* *",
 		"y": "* *\n* *\n * \n * \n * ",
 		"z": "   \n   \n   \n   \n   ",
 		" ": "   \n   \n   \n   \n   ",
 	};
 
+	let pos = 0;
 
 	msg.toLowerCase().split("").forEach((letter, li) => {
-		(letters[letter] || "***\n***\n***\n***\n***").split("\n").forEach((row, ri) => {
-			row.padEnd(3, " ").slice(0, 3).split("").forEach((block, bi) => {
+		const rows = (letters[letter] || "***\n***\n***\n***\n***").split("\n");
+		const rowLength = rows[0].length;
+		
+		rows.forEach((row, ri) => {
+			row.padEnd(rowLength, " ").slice(0, 3).split("").forEach((block, bi) => {
 
-				noa.setBlock(block === "*" ? mat : 50, [0, y - ri, li * 4 + bi]);
+				noa.setBlock(block === "*" ? mat : 50, [0, y - ri, pos + bi]);
 
+				if (bi === row.length - 1 && ri === rows.length - 1) {
+					pos += rowLength + 1;
+				}
 			});
 		});
 	});
